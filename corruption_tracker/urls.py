@@ -15,9 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from rest_framework import routers
 
 from claim import views as claim_views
 from . import views
+from corruption_tracker.rest import ClaimViewSet, UserViewSet
+
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'claims', ClaimViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -34,4 +41,8 @@ urlpatterns = [
     url(r'^get_claims/(?P<polygon_id>[\w.]{0,256})/$',
         claim_views.get_claims, name="get_claims"),
     url(r'^add_claim$', claim_views.add_claim, name="add_claim"),
+
+    url(r'^v1/', include(router.urls)),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+
 ]

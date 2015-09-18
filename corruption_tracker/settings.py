@@ -42,6 +42,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     # 'allauth.socialaccount.providers.facebook',
 
+    'rest_framework',
+    'oauth2_provider',
+    'corsheaders',
 
     'leaflet',
     'claim',
@@ -57,6 +60,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
 
 ROOT_URLCONF = 'corruption_tracker.urls'
@@ -140,6 +144,29 @@ LEAFLET_CONFIG = {
                              'services/World_Street_Map/MapServer/tile/'
                              '{z}/{y}/{x}', {})]
 
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        # 'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
+
+}
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        'groups': 'Access to your groups'
+    }
 }
 
 
